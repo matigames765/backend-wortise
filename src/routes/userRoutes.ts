@@ -1,13 +1,11 @@
 import { Hono } from 'hono'
+import { getUser, postUser } from '../controllers/userController.js'
+import { zValidator } from '@hono/zod-validator'
+import { createUserSchema } from '../schemas/userSchema.js'
 
 const userRoutes = new Hono()
 
-userRoutes.get('/', (c) => {
-  return c.json({ message: 'Obtener usuarios todavía no implementado' }, 501)
-})
-
-userRoutes.post('/', (c) => {
-  return c.json({ message: 'Crear usuario todavía no implementado' }, 501)
-})
+userRoutes.get('/:id', getUser)
+userRoutes.post('/', zValidator('json', createUserSchema), postUser)
 
 export default userRoutes

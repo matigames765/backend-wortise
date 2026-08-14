@@ -1,9 +1,6 @@
 import { Hono } from 'hono';
+import { getUser, postUser } from '../controllers/userController.js';
 const userRoutes = new Hono();
-userRoutes.get('/', (c) => {
-    return c.json({ message: 'Obtener usuarios todavía no implementado' }, 501);
-});
-userRoutes.post('/', (c) => {
-    return c.json({ message: 'Crear usuario todavía no implementado' }, 501);
-});
+userRoutes.get('/', getUser);
+userRoutes.post('/', postUser);
 export default userRoutes;
