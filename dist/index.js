@@ -1,29 +1,21 @@
+// index.ts
 import 'dotenv/config';
 import { Hono } from 'hono';
+import { cors } from 'hono/cors';
 import { serve } from '@hono/node-server';
+import userRoutes from './routes/userRoutes.js';
+import { connectDB } from './config/database.js';
 const app = new Hono();
 const port = Number(process.env.PORT) || 3000;
-// Ruta de ejemplo
-// GET http://localhost:3000/
-app.get('/', (c) => {
-    return c.json({
-        message: 'API funcionando con Hono 🔥',
-    });
-});
+app.use('*', cors({
+    origin: 'http://localhost:5174',
+    allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization'],
+}));
+await connectDB();
+app.route('/users', userRoutes);
 serve({
     fetch: app.fetch,
     port,
 });
 console.log(`Servidor escuchando en http://localhost:${port}`);
-/*
-// Más adelante podrías importar tus rutas así:
-
-import authRoutes from './routes/Usuario/authRoutes'
-import userRoutes from './routes/Usuario/userRoutes'
-import productoRoutes from './routes/Producto/productoRoutes'
-
-// Y montarlas usando app.route()
-app.route('/auth', authRoutes)
-app.route('/users', userRoutes)
-app.route('/productos', productoRoutes)
-*/

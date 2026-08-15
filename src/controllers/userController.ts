@@ -13,11 +13,13 @@ type CreateUserContext = Context<
   }
 >
 
-const db = getDB()
+
 
 export const getUser = async (c: Context) => {
   try {
     const id = c.req.param('id')
+
+    const db = getDB()
 
     const user = await db.collection('users').findOne({
         _id: new Object(id)
@@ -33,6 +35,8 @@ export const getUser = async (c: Context) => {
 
 export const postUser = async (c: CreateUserContext) => {
   try {
+    const db = getDB()
+
     const data = c.req.valid('json')
 
     const result = await db.collection('users').insertOne({
