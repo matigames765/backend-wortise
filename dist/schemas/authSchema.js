@@ -1,5 +1,5 @@
 import { z } from 'zod';
-export const createUserSchema = z.object({
+export const authSchema = z.object({
     email: z
         .string()
         .email('El email no es válido'),

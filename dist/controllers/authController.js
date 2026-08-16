@@ -1,5 +1,5 @@
 import { getDB } from '../config/database.js';
-export const getUser = async (c) => {
+export const getAuth = async (c) => {
     try {
         const id = c.req.param('id');
         const db = getDB();
@@ -13,7 +13,7 @@ export const getUser = async (c) => {
         return c.json({ message: 'No se pudo encontrar el usuario' }, 404);
     }
 };
-export const postUser = async (c) => {
+export const postAuth = async (c) => {
     try {
         const db = getDB();
         const data = c.req.valid('json');
