@@ -1,10 +1,10 @@
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
-import { postArticle } from '../controllers/articleController.js';
+import { deleteArticle, getAllArticles, postArticle, updateArticle } from '../controllers/articleController.js';
 import { articleSchema } from '../schemas/articlesSchema.js';
 const articlesRoutes = new Hono();
 articlesRoutes.post('/', zValidator('json', articleSchema), postArticle);
-articlesRoutes.get('/');
-articlesRoutes.put('/');
-articlesRoutes.delete('/');
+articlesRoutes.get('/', getAllArticles);
+articlesRoutes.put('/:id', zValidator('json', articleSchema), updateArticle);
+articlesRoutes.delete('/:id', deleteArticle);
 export default articlesRoutes;
