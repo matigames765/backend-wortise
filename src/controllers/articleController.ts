@@ -98,6 +98,81 @@ export const getAllArticles = async (c: Context) => {
   }
 };
 
+export const getArticleCountByAuthor = async (c: Context) => {
+  try {
+    const db = getDB();
+
+    const articlesByAuthor = await db
+      .collection("articles")
+      .aggregate([
+        {
+          $group: {
+            _id: "$authorName",
+            totalArticles: { $sum: 1 },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            authorName: "$_id",
+            totalArticles: 1,
+          },
+        },
+        {
+          $sort: {
+            totalArticles: -1,
+            authorName: 1,
+          },
+        },
+      ])
+      .toArray();
+
+    return c.json(articlesByAuthor);
+  } catch (error) {
+    return c.json(
+      {
+        message: "Error al obtener la cantidad de artículos por autor",
+      },
+      500,
+    );
+  }
+};
+
+export const getArticleFilter = async (c: Context) => {
+  try {
+    const filter = c.req.param("filter")?.trim();
+
+    if (!filter) {
+      return c.json({ message: "El filtro es obligatorio" }, 400);
+    }
+
+    const escapedFilter = filter.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const filterRegex = new RegExp(`^${escapedFilter}`, "i");
+
+    const db = getDB();
+    const articles = await db
+      .collection("articles")
+      .find({
+        $or: [
+          { title: filterRegex },
+          { content: filterRegex },
+          { authorName: filterRegex },
+        ],
+      })
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    return c.json(articles);
+  } catch (error) {
+    return c.json(
+      {
+        message: "Error al filtrar los artículos",
+      },
+      500,
+    );
+  }
+};
+
 export const updateArticle = async (c: ArticleBodyContext) => {
   try {
     const id = c.req.param("id");
