@@ -57,6 +57,15 @@ export const getAllArticles = async (c: Context) => {
   try {
     const db = getDB();
 
+    const session = await auth.api.getSession({
+      headers: c.req.raw.headers,
+    });
+
+    if (!session) {
+      return c.json({ message: "No autorizado" }, 401);
+    }
+
+
     const page = Number(c.req.query("page")) || 1;
     const limit = Number(c.req.query("limit")) || 10;
 
