@@ -63,4 +63,9 @@ Finalmente, ejecutá el servidor en modo desarrollo: ▶️🔥
 npm run dev
 ```
 
+## Agradecimientos 🙌
+
+Gracias por la oportunidad de realizar esta prueba técnica. Disfruté mucho trabajar en el proyecto y me encantaría tener la oportunidad de formar parte del equipo y seguir creciendo junto a ustedes.
+
+
 

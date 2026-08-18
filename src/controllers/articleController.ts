@@ -65,7 +65,6 @@ export const getAllArticles = async (c: Context) => {
       return c.json({ message: "No autorizado" }, 401);
     }
 
-
     const page = Number(c.req.query("page")) || 1;
     const limit = Number(c.req.query("limit")) || 10;
 
@@ -76,7 +75,7 @@ export const getAllArticles = async (c: Context) => {
     const [articles, totalArticles] = await Promise.all([
       articlesCollection
         .find({})
-        .sort({createdAt: -1})
+        .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
         .toArray(),
@@ -101,7 +100,7 @@ export const getAllArticles = async (c: Context) => {
         {
           message: `Error al obtener todos los artículos: ${error.message}`,
         },
-        500
+        500,
       );
     }
   }
